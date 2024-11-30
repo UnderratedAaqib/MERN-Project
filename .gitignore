@@ -1,0 +1,20 @@
+# Node.js dependencies
+node_modules/
+
+# Bun dependencies (if you're using Bun)
+bun.lockb
+
+# Environment variables file
+.env
+
+# Logs
+*.log
+# Build output for frontend (Vite)
+dist/
+
+# Build output for backend (optional)
+build/
+
+# OS generated files
+.DS_Store
+Thumbs.db
