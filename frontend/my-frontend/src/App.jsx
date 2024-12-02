@@ -1,12 +1,11 @@
-// src/App.jsx
 import React from 'react';
-import UserRegistration from './components/userRegisteration.jsx';
-
+import AppRoutes from './routes/AppRoutes';  // Routes handling
+import './styles/global.css';  // Global styles
+import 'bootstrap/dist/css/bootstrap.min.css';
 const App = () => {
   return (
-    <div>
-      <h1>Welcome to My Portfolio Helper</h1>
-      <UserRegistration />
+    <div className="app-container">
+      <AppRoutes />
     </div>
   );
 };
