@@ -1,0 +1,13 @@
+.project-card {
+    border-radius: 10px;
+    transition: transform 0.2s ease;
+  }
+  
+  .project-card:hover {
+    transform: scale(1.02);
+  }
+  
+  .project-card .btn {
+    font-size: 0.9rem;
+  }
+  
