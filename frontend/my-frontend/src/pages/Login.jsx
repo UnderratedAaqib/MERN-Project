@@ -1,19 +1,32 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { loginUser } from '../api/userApi';  // Import the loginUser API function
 import { Lock, Mail, Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  // Handle the form submission for login
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your login logic here (e.g., check email/password)
-    // If successful, navigate to dashboard
-    localStorage.setItem('token', 'your-token'); // Save token to simulate login
-    navigate('/dashboard');
+
+    try {
+      // Call the loginUser API function
+      const userData = { email, password };
+      const response = await loginUser(userData);
+
+      // If login is successful, store the JWT token and navigate to the dashboard
+      localStorage.setItem('token', response.data.token); // Store token in localStorage
+      setErrorMessage(''); // Clear any previous error messages
+      navigate('/profile'); // Navigate to the dashboard or other route after login
+    } catch (error) {
+      // If login fails (e.g., incorrect credentials), display an error message
+      setErrorMessage(error.response?.data?.message || 'Invalid email or password');
+    }
   };
 
   return (
@@ -53,7 +66,7 @@ const Login = () => {
                 <Lock className="h-5 w-5 text-gray-400" />
               </div>
               <input
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Password"
                 className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
                 value={password}
@@ -68,6 +81,11 @@ const Login = () => {
                 {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
               </button>
             </div>
+
+            {/* Error Message */}
+            {errorMessage && (
+              <div className="text-red-600 text-center mt-3">{errorMessage}</div>
+            )}
 
             {/* Forgot Password Link */}
             <div className="text-right">
