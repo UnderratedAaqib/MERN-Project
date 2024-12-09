@@ -32,6 +32,21 @@ const Navbar = () => {
               <Link className="nav-link" to="/projects">Projects</Link>
             </li>
             <li className="nav-item">
+              <Link className="nav-link" to="/conferencetalks">Conference Talks</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/mediacoverage">Media Coverage</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/photogallery">Photo Gallery</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/contactnetworking">Contact</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/analyticsdashboard">Analytics</Link>
+            </li>
+            <li className="nav-item">
               <Link className="nav-link" to="/logout">Logout</Link>
             </li>
           </ul>

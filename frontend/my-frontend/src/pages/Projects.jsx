@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../styles/Projects.css';
 
 const Projects = () => {
   const [projects, setProjects] = useState([
@@ -26,10 +27,10 @@ const Projects = () => {
 
   return (
     <div className="container mt-5">
-      <h2 className="text-center">Projects & Research Collaborations</h2>
+      <h2 className="text-center mb-4">Projects & Research Collaborations</h2>
       <form onSubmit={handleSubmit}>
         {projects.map((project, index) => (
-          <div key={index} className="card mb-3 p-3">
+          <div key={index} className="card project-card mb-3 p-4">
             <div className="form-group mb-3">
               <label>Project Name</label>
               <input
@@ -54,8 +55,14 @@ const Projects = () => {
             </div>
           </div>
         ))}
-        <button type="button" className="btn btn-secondary" onClick={addProject}>Add Project</button>
-        <button type="submit" className="btn btn-primary w-100 mt-3">Save Projects</button>
+        <div className="d-flex justify-content-between mb-3">
+          <button type="button" className="btn btn-secondary" onClick={addProject}>
+            Add Project
+          </button>
+          <button type="submit" className="btn btn-primary w-100 mt-3">
+            Save Projects
+          </button>
+        </div>
       </form>
     </div>
   );

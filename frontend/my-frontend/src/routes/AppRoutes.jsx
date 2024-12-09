@@ -8,6 +8,11 @@ import Login from '../pages/Login';
 import Register from '../pages/Register';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import ConferenceTalks from '../pages/ConferenceTalks';
+import MediaCoverage from '../pages/MediaCoverage';
+import PhotoGallery from '../pages/PhotoGallery';
+import ContactNetworking from '../pages/ContactNetworking';
+import AnalyticsDashboard from '../pages/AnalyticsDashboard';
 
 const AppRoutes = () => {
   return (
@@ -21,6 +26,11 @@ const AppRoutes = () => {
           <Route path="/publications" element={<Publications />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/teaching" element={<Teaching />} />
+          <Route path="/conferencetalks" element={<ConferenceTalks />} />
+          <Route path="/mediacoverage" element={<MediaCoverage />} />
+          <Route path="/photogallery" element={<PhotoGallery />} />
+          <Route path="/contactnetworking" element={<ContactNetworking />} />
+          <Route path="/analyticsdashboard" element={<AnalyticsDashboard />} />
           <Route path="*" element={<h1>404: Page Not Found</h1>} />
         </Routes>
       </div>
