@@ -1,5 +1,6 @@
 import express from 'express';
-import { registerUser, loginUser, updateProfile,getUserProfile,addPublication,getUserPublications,updatePublication,deletePublication } from '../controllers/userDataController.js';
+import { registerUser, loginUser, updateProfile,getUserProfile,addPublication,getUserPublications,updatePublication,deletePublication,addCourse,deleteCourse,getCourses,getProjects,addProject,deleteProject,addTalk,getTalks,deleteTalk,getMediaArticles,addMediaArticle,deleteMediaArticle} from '../controllers/userDataController.js';
+
 import { protect } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
@@ -28,4 +29,39 @@ router.put('/publications', protect, updatePublication);
 
 // Delete a publication (protected route)
 router.delete('/publications/:publicationId', protect, deletePublication);
+
+
+//teaching portfolio
+router.get('/courses', protect, getCourses); 
+router.post('/courses', protect, addCourse);
+router.delete('/courses/:courseId', protect, deleteCourse);
+
+
+
+
+// Get all projects for the logged-in user
+router.get('/projects', protect, getProjects);
+
+// Add a new project for the logged-in user
+router.post('/projects', protect, addProject);
+
+// Delete a project by ID
+router.delete('/projects/:projectId', protect, deleteProject);
+
+
+router.get('/talks', protect, getTalks); // Fetch all talks for the user
+router.post('/talks', protect, addTalk); // Add a new talk
+router.delete('/talks/:talkId', protect, deleteTalk); 
+
+
+
+//for mediacoverage routes
+router.get('/media', protect, getMediaArticles);
+
+// Add a new media article for the logged-in user
+router.post('/media', protect, addMediaArticle);
+
+// Delete a media article by ID
+router.delete('/media/:articleId', protect, deleteMediaArticle);
+
 export default router;
