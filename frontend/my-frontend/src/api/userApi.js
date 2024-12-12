@@ -135,4 +135,176 @@ export const addPublication = (publicationData) => {
         throw err;
       });
   };
+
+
+  //for teaching portfolio
+  // API call to add a course (protected route)
+export const addCourse = (courseData) => {
+  const token = getAuthToken();
+  console.log('Sending data:', courseData);  // Log data being sent
+    console.log('Using token:', token); 
+  return API.post('/courses', courseData, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Attach token to the Authorization header
+    },
+  });
+};
+
+// API call to delete a course (protected route)
+export const deleteCourse = (courseId) => {
+  const token = getAuthToken();
+  return API.delete(`/courses/${courseId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Attach token to the Authorization header
+    },
+  });
+};
+
 // You can add more API functions here as needed
+
+
+// Assuming you have a getAuthToken function that retrieves the stored token
+export const getCourses = () => {
+  const token = getAuthToken();  // Retrieve the authentication token
+  return API.get('/courses', {
+    headers: {
+      Authorization: `Bearer ${token}`  // Attach the token in Authorization header
+    }
+  })
+  .then(response => response.data)
+  .catch(error => {
+      console.error('Failed to fetch courses:', error);
+      throw error;
+  });
+};
+
+
+//project 
+// API call for projects (newly added)
+// API call to add a project (protected route)
+export const addProject = (projectData) => {
+  const token = getAuthToken();
+  console.log('Adding project:', projectData);
+  return API.post('/projects', projectData, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Attach token to the Authorization header
+    },
+  })
+    .then((response) => {
+      console.log('Project added:', response.data);
+      return response.data;
+    })
+    .catch((err) => {
+      console.error('Error adding project:', err);
+      throw err;
+    });
+};
+
+// API call to fetch all projects for the logged-in user
+export const getProjects = () => {
+  const token = getAuthToken();
+  return API.get('/projects', {
+    headers: {
+      Authorization: `Bearer ${token}`, // Attach token to the Authorization header
+    },
+  })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Failed to fetch projects:', error);
+      throw error;
+    });
+};
+
+// API call to delete a project (protected route)
+export const deleteProject = (projectId) => {
+  const token = getAuthToken();
+  return API.delete(`/projects/${projectId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Attach token to the Authorization header
+    },
+  })
+    .then((response) => {
+      console.log('Project deleted:', response.data);
+      return response.data;
+    })
+    .catch((err) => {
+      console.error('Error deleting project:', err);
+      throw err;
+    });
+};
+
+
+// Talks
+// API call to add a talk (protected route)
+export const addTalk = (talkData) => {
+  const token = getAuthToken();
+  console.log('Adding talk:', talkData);
+  return API.post('/talks', talkData, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Attach token to the Authorization header
+    },
+  })
+    .then((response) => {
+      console.log('Talk added:', response.data);
+      return response.data;
+    })
+    .catch((err) => {
+      console.error('Error adding talk:', err);
+      throw err;
+    });
+};
+
+// API call to fetch all talks for the logged-in user
+export const getTalks = () => {
+  const token = getAuthToken();
+  return API.get('/talks', {
+    headers: {
+      Authorization: `Bearer ${token}`, // Attach token to the Authorization header
+    },
+  })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Failed to fetch talks:', error);
+      throw error;
+    });
+};
+
+// API call to delete a talk (protected route)
+export const deleteTalk = (talkId) => {
+  const token = getAuthToken();
+  return API.delete(`/talks/${talkId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`, // Attach token to the Authorization header
+    },
+  })
+    .then((response) => {
+      console.log('Talk deleted:', response.data);
+      return response.data;
+    })
+    .catch((err) => {
+      console.error('Error deleting talk:', err);
+      throw err;
+    });
+};
+
+//for media coverage
+export const addMediaArticle = (mediaData) => {
+  const token = getAuthToken();
+  return API.post('/media', mediaData, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
+export const getMediaArticles = () => {
+  const token = getAuthToken();
+  return API.get('/media', {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
+export const deleteMediaArticle = (articleId) => {
+  const token = getAuthToken();
+  return API.delete(`/media/${articleId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};

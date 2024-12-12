@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../api/userApi';  // Import the loginUser API function
 import { Lock, Mail, Eye, EyeOff } from 'lucide-react';
+//import '../styles/Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');

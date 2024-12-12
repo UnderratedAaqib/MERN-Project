@@ -2,6 +2,10 @@ import bcrypt from 'bcryptjs'; // bcryptjs for hashing passwords
 import jwt from 'jsonwebtoken'; // JWT for creating tokens
 import UserData from '../models/UserData.js';
 import Publication from '../models/Publications.js'
+import Course from '../models/CourseModel.js';
+import Project from '../models/ProjectModel.js';
+import Talk from "../models/Talk.js";
+import MediaCoverage from '../models/MediaCoverage.js';
 // Register a new user
 export const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
@@ -240,3 +244,190 @@ export const getUserProfile = async (req, res) => {
       res.status(500).json({ message: 'Server error', error: error.message });
     }
   };
+
+
+
+
+  export const addCourse = async (req, res) => {
+    const { title, description } = req.body;
+    if (!title || !description) {
+      return res.status(400).json({ message: "Title and description are required." });
+    }
+    try {
+      const newCourse = new Course({
+        userId: req.userId, // assuming req.user is populated from the auth middleware
+        title,
+        description
+      });
+      const savedCourse = await newCourse.save();
+      res.status(201).json(savedCourse);
+    } catch (error) {
+      console.error("Error when adding course:", error);
+      res.status(500).json({ message: "Internal Server Error", error: error.message });
+    }
+  };
+  
+export const deleteCourse = async (req, res) => {
+  const { courseId } = req.params;
+  try {
+    const deletedCourse = await Course.findByIdAndDelete(courseId);
+    if (!deletedCourse) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+    res.status(200).json({ message: 'Course deleted' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+// File: controllers/CourseController.js
+export const getCourses = async (req, res) => {
+  try {
+      const courses = await Course.find({ userId: req.userId });
+      res.status(200).json(courses);
+  } catch (error) {
+      res.status(500).json({ message: "Failed to retrieve courses", error: error.message });
+  }
+};
+
+//for projects
+
+// Get All Projects for a User
+export const getProjects = async (req, res) => {
+  try {
+    const projects = await Project.find({ userId: req.userId }); // Find projects by userId
+    res.status(200).json(projects); // Return the projects
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to retrieve projects', error: error.message });
+  }
+};
+
+// Add a New Project
+export const addProject = async (req, res) => {
+  const { name, affiliation, description } = req.body;
+
+  // Validate required fields
+  if (!name || !affiliation || !description) {
+    return res.status(400).json({ message: 'Name, affiliation, and description are required.' });
+  }
+
+  try {
+    const newProject = new Project({
+      userId: req.userId, // Populate userId from the auth middleware
+      name,
+      affiliation,
+      description,
+    });
+
+    const savedProject = await newProject.save(); // Save the project to the database
+    res.status(201).json(savedProject); // Return the saved project
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to add project', error: error.message });
+  }
+};
+
+// Delete a Project
+export const deleteProject = async (req, res) => {
+  const { projectId } = req.params; // Get projectId from route parameters
+
+  try {
+    const deletedProject = await Project.findByIdAndDelete(projectId); // Delete the project by ID
+    if (!deletedProject) {
+      return res.status(404).json({ message: 'Project not found' });
+    }
+    res.status(200).json({ message: 'Project deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to delete project', error: error.message });
+  }
+};
+
+
+//For conferences and talks
+export const getTalks = async (req, res) => {
+  try {
+    const talks = await Talk.find({ userId: req.userId }); // Fetch talks for the logged-in user
+    res.status(200).json(talks);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to retrieve talks", error: error.message });
+  }
+};
+
+export const addTalk = async (req, res) => {
+  const { title, description, videoUrl } = req.body;
+
+  if (!title || !description || !videoUrl) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+
+  try {
+    const newTalk = new Talk({
+      userId: req.userId, // Use the logged-in user's ID
+      title,
+      description,
+      videoUrl,
+    });
+
+    const savedTalk = await newTalk.save();
+    res.status(201).json(savedTalk);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to add talk", error: error.message });
+  }
+};
+
+export const deleteTalk = async (req, res) => {
+  const { talkId } = req.params;
+
+  try {
+    const deletedTalk = await Talk.findOneAndDelete({ _id: talkId, userId: req.userId });
+
+    if (!deletedTalk) {
+      return res.status(404).json({ message: "Talk not found or not authorized to delete" });
+    }
+
+    res.status(200).json({ message: "Talk deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete talk", error: error.message });
+  }
+};
+//for media coverage
+
+
+// Get all media coverage articles for the logged-in user
+export const getMediaArticles = async (req, res) => {
+  try {
+    const articles = await MediaCoverage.find({ userId: req.userId });
+    res.status(200).json(articles);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to retrieve media articles', error: error.message });
+  }
+};
+
+// Add a new media coverage article for the logged-in user
+export const addMediaArticle = async (req, res) => {
+  const { title, description, link } = req.body;
+  try {
+    const newArticle = new MediaCoverage({
+      userId: req.userId, // From auth middleware
+      title,
+      description,
+      link,
+    });
+    const savedArticle = await newArticle.save();
+    res.status(201).json(savedArticle);
+  } catch (error) {
+    res.status(400).json({ message: 'Failed to add media article', error: error.message });
+  }
+};
+
+// Delete a media coverage article by ID
+export const deleteMediaArticle = async (req, res) => {
+  const { articleId } = req.params;
+  try {
+    const deletedArticle = await MediaCoverage.findByIdAndDelete(articleId);
+    if (!deletedArticle) {
+      return res.status(404).json({ message: 'Article not found' });
+    }
+    res.status(200).json({ message: 'Article deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to delete media article', error: error.message });
+  }
+};

@@ -1,41 +1,64 @@
-// ConferenceTalks.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import { getTalks, addTalk, deleteTalk } from "../api/userApi"; // Import API calls for talks
 
 const ConferenceTalks = () => {
-  const [talks, setTalks] = useState([
-    {
-      title: "Keynote: The Future of Technology",
-      description: "Delivered at the International Tech Conference 2024.",
-      videoUrl: "https://www.youtube.com/embed/samplevideo1",
-    },
-    {
-      title: "Workshop: Introduction to AI Ethics",
-      description: "Presented at the Global AI Summit.",
-      videoUrl: "https://www.youtube.com/embed/samplevideo2",
-    },
-    {
-      title: "Panel Discussion: Women in Tech",
-      description: "Participated at the Women Innovators Summit.",
-      videoUrl: "https://www.youtube.com/embed/samplevideo3",
-    },
-  ]);
+  const [talks, setTalks] = useState([]); // State to store talks
+  const [newTalk, setNewTalk] = useState({ title: "", description: "", videoUrl: "" }); // State for new talk
+  const [loading, setLoading] = useState(true); // Loading state
 
-  const [newTalk, setNewTalk] = useState({ title: "", description: "", videoUrl: "" });
+  // Fetch talks from the database when the component mounts
+  useEffect(() => {
+    const fetchTalks = async () => {
+      try {
+        const fetchedTalks = await getTalks(); // Fetch talks using API
+        setTalks(fetchedTalks);
+      } catch (error) {
+        console.error("Error fetching talks:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchTalks();
+  }, []);
+
+  // Handle input changes for new talk
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewTalk({ ...newTalk, [name]: value });
   };
 
-  const handleAddTalk = (e) => {
+  // Handle form submission to add a new talk
+  const handleAddTalk = async (e) => {
     e.preventDefault();
-    setTalks([...talks, newTalk]);
-    setNewTalk({ title: "", description: "", videoUrl: "" });
+    try {
+      const addedTalk = await addTalk(newTalk); // Add talk to the database via API
+      setTalks([...talks, addedTalk]); // Update the state with the new talk
+      setNewTalk({ title: "", description: "", videoUrl: "" }); // Reset form fields
+    } catch (error) {
+      console.error("Error adding talk:", error);
+    }
   };
+
+  // Handle delete talk
+  const handleDeleteTalk = async (talkId) => {
+    try {
+      await deleteTalk(talkId); // Delete talk via API
+      setTalks(talks.filter((talk) => talk._id !== talkId)); // Remove the deleted talk from the state
+    } catch (error) {
+      console.error("Error deleting talk:", error);
+    }
+  };
+
+  if (loading) {
+    return <div>Loading talks...</div>; // Show loading indicator
+  }
 
   return (
     <div className="container conference-talks">
       <h2 className="text-center mb-4">Conference Talks and Presentations</h2>
+
+      {/* Form to Add New Talk */}
       <form className="mb-4" onSubmit={handleAddTalk}>
         <div className="row">
           <div className="col-md-3 mb-2">
@@ -72,13 +95,17 @@ const ConferenceTalks = () => {
             />
           </div>
           <div className="col-md-2 mb-2">
-            <button type="submit" className="btn btn-primary w-100">Add Talk</button>
+            <button type="submit" className="btn btn-primary w-100">
+              Add Talk
+            </button>
           </div>
         </div>
       </form>
+
+      {/* List of Talks */}
       <div className="row">
-        {talks.map((talk, index) => (
-          <div className="col-md-4 mb-4" key={index}>
+        {talks.map((talk) => (
+          <div className="col-md-4 mb-4" key={talk._id}>
             <div className="card shadow">
               <div className="card-body">
                 <h5 className="card-title">{talk.title}</h5>
@@ -91,6 +118,12 @@ const ConferenceTalks = () => {
                     title={talk.title}
                   ></iframe>
                 </div>
+                <button
+                  className="btn btn-danger mt-3"
+                  onClick={() => handleDeleteTalk(talk._id)}
+                >
+                  Delete Talk
+                </button>
               </div>
             </div>
           </div>
