@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Lock, User, Mail, Briefcase, University } from 'lucide-react';
 import { getUserProfile, updateUserProfile } from '../api/userApi';  // Correct import path
 import { useNavigate } from 'react-router-dom';  // For navigation after successful submission
+import '../styles/Profile.css';  // Import the Profile CSS
 
 const Profile = () => {
   const [profile, setProfile] = useState({
@@ -11,7 +12,7 @@ const Profile = () => {
     email: '',
     bio: ''
   });
-  
+
   const [loading, setLoading] = useState(true);  // Loading state for fetching profile
   const [error, setError] = useState('');  // Error state for displaying any errors
   const navigate = useNavigate();  // Use navigate from React Router v6
@@ -40,7 +41,7 @@ const Profile = () => {
           setLoading(false);  // Stop loading when the fetch is done
         }
       };
-      
+
       fetchProfile();  // Fetch user profile on component mount
     }
   }, [token, navigate]);
@@ -67,29 +68,26 @@ const Profile = () => {
   };
 
   if (loading) {
-    return <div className="text-center">Loading...</div>;  // Optionally, you can add a spinner or loading indicator here
+    return <div className="loading">Loading...</div>;  // Optionally, you can add a spinner or loading indicator here
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-100 p-4">
-      <div className="w-full max-w-2xl bg-white shadow-2xl rounded-2xl overflow-hidden">
-        <div className="p-8 bg-white">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
-            Create Your Profile
-          </h2>
+    <div className="profile-container">
+      <div className="profile-main">
+        <div className="card">
+          <h2 className="heading">Create Your Profile</h2>
 
-          {error && <p className="text-red-500 text-center mb-4">{error}</p>}  {/* Display error message */}
+          {error && <p className="error-message">{error}</p>}  {/* Display error message */}
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit}>
             {/* Name Input */}
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <User className="h-5 w-5 text-gray-400" />
+            <div className="form-group">
+              <div className="icon-wrapper">
+                <User className="icon" />
               </div>
               <input
                 type="text"
                 placeholder="Full Name"
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
                 name="name"
                 value={profile.name}
                 onChange={handleChange}
@@ -98,14 +96,13 @@ const Profile = () => {
             </div>
 
             {/* Position Input */}
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Briefcase className="h-5 w-5 text-gray-400" />
+            <div className="form-group">
+              <div className="icon-wrapper">
+                <Briefcase className="icon" />
               </div>
               <input
                 type="text"
                 placeholder="Position"
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
                 name="position"
                 value={profile.position || ''}
                 onChange={handleChange}
@@ -114,14 +111,13 @@ const Profile = () => {
             </div>
 
             {/* University Input */}
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <University className="h-5 w-5 text-gray-400" />
+            <div className="form-group">
+              <div className="icon-wrapper">
+                <University className="icon" />
               </div>
               <input
                 type="text"
                 placeholder="University"
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
                 name="university"
                 value={profile.university || ''}
                 onChange={handleChange}
@@ -130,14 +126,13 @@ const Profile = () => {
             </div>
 
             {/* Email Input */}
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Mail className="h-5 w-5 text-gray-400" />
+            <div className="form-group">
+              <div className="icon-wrapper">
+                <Mail className="icon" />
               </div>
               <input
                 type="email"
                 placeholder="Email Address"
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
                 name="email"
                 value={profile.email}
                 onChange={handleChange}
@@ -147,10 +142,9 @@ const Profile = () => {
             </div>
 
             {/* Bio Textarea */}
-            <div className="relative">
+            <div className="form-group">
               <textarea
                 placeholder="Tell us about yourself"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 h-32 resize-none"
                 name="bio"
                 value={profile.bio || ''}
                 onChange={handleChange}
@@ -159,17 +153,17 @@ const Profile = () => {
             </div>
 
             {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300 flex items-center justify-center space-x-2"
-              disabled={loading}
-            >
-              <Lock className="h-5 w-5" />
+            <button type="submit" className="submit-btn" disabled={loading}>
+              <Lock className="icon" />
               <span>{loading ? 'Saving...' : 'Save Profile'}</span>
             </button>
           </form>
         </div>
       </div>
+
+      <footer>
+        <p>&copy; 2024 My App. All rights reserved.</p>
+      </footer>
     </div>
   );
 };

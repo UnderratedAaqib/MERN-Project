@@ -44,6 +44,9 @@ const Navbar = () => {
               <Link className="nav-link" to="/analyticsdashboard">Analytics</Link>
             </li>
             <li className="nav-item">
+              <Link className="nav-link" to="/pdf">Download as PDF</Link>
+            </li>
+            <li className="nav-item">
               <Link className="nav-link" to="/logout">Logout</Link>
             </li>
           </ul>

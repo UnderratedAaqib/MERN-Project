@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { addCourse, deleteCourse, getCourses } from '../api/userApi'; // Import getCourses
+import '../styles/Teaching.css';  // Import Teaching CSS
 
 const Teaching = () => {
   const [courses, setCourses] = useState([]);
@@ -41,35 +42,58 @@ const Teaching = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <h2 className="text-center">Teaching Portfolio</h2>
-      {courses.map((course, index) => (
-        <div key={index} className="card mb-3 p-3">
-          <h4>{course.title}</h4>
-          <p>{course.description}</p>
-          <button type="button" className="btn btn-danger" onClick={() => handleDelete(course._id, index)}>Delete Course</button>
+    <div className="teaching-container">
+      
+      <main className="teaching-main">
+        {courses.length === 0 ? (
+          <p>No courses available. Add a new course below.</p>
+        ) : (
+          courses.map((course, index) => (
+            <div key={index} className="teaching-card">
+              <h4>{course.title}</h4>
+              <p>{course.description}</p>
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={() => handleDelete(course._id, index)}
+              >
+                Delete Course
+              </button>
+            </div>
+          ))
+        )}
+
+        <div className="new-course-form">
+          <input
+            type="text"
+            className="form-control"
+            name="title"
+            placeholder="Enter course title"
+            value={newCourse.title}
+            onChange={handleChange}
+            required
+          />
+          <textarea
+            className="form-control"
+            name="description"
+            placeholder="Enter course description"
+            value={newCourse.description}
+            onChange={handleChange}
+            rows="4"
+          ></textarea>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={addNewCourse}
+          >
+            Add Course
+          </button>
         </div>
-      ))}
-      <div>
-        <input
-          type="text"
-          className="form-control"
-          name="title"
-          placeholder="Enter course title"
-          value={newCourse.title}
-          onChange={handleChange}
-          required
-        />
-        <textarea
-          className="form-control"
-          name="description"
-          placeholder="Enter course description"
-          value={newCourse.description}
-          onChange={handleChange}
-          rows="4"
-        ></textarea>
-        <button type="button" className="btn btn-secondary" onClick={addNewCourse}>Add Course</button>
-      </div>
+      </main>
+
+      <footer className="teaching-footer">
+        <p>&copy; 2024 My App. All rights reserved.</p>
+      </footer>
     </div>
   );
 };
