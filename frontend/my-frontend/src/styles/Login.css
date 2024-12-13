@@ -1,118 +1,206 @@
-/* Login.css */
-
-/* Center the container vertically and horizontally */
-.container {
+/* Global Layout Fixes */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
   display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+}
+
+/* Full height layout: The header stays at the top, the content takes the available space, and footer stays at the bottom */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header Styling */
+header {
+  background-color: #2a2d30;
+  color: white;
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+/* Main Content Styling - Login Form */
+.main-content {
+  display: flex;
+  flex: 1;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  width: 100vw; /* Added to ensure full viewport width */
-  max-width: 100%; /* Ensures no horizontal scrolling */
-  background-color: #f5f5f5;
-  margin: 0; /* Remove any default margins */
-  padding: 0; /* Remove any default padding */
-  box-sizing: border-box; /* Include padding and border in element's total width and height */
+  padding: 2rem;
 }
 
-/* Card styling */
+/* Login Card Styling */
 .card {
-  width: 100%; /* Changed to 100% to fill available width */
-  max-width: 500px; /* Increased max-width for better readability */
-  min-width: 300px; /* Added minimum width for smaller screens */
-  border: none;
+  background-color: white;
+  width: 100%;
+  max-width: 400px;  /* Adjust max-width as needed */
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
   padding: 2rem;
-  margin: 0 1rem; /* Added horizontal margin for breathing room on smaller screens */
   animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Logo Styling */
+.logo-container {
   display: flex;
   justify-content: center;
-  align-items: center
+  margin-bottom: 1.5rem;
 }
 
-/* Form styling */
-.form-group {
-  width: 100%; /* Ensure full width of the form */
-  margin-bottom: 1rem; /* Added space between form groups */
+.logo {
+  height: 3rem;
+  width: 3rem;
+  color: #3b4249;
 }
 
-.form-group label {
-  font-size: 0.9rem;
+/* Heading and Subheading */
+.heading {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
   color: #333333;
   margin-bottom: 0.5rem;
-  display: block; /* Ensure label takes full width */
+}
+
+.subheading {
+  font-size: 1rem;
+  text-align: center;
+  color: #666666;
+  margin-bottom: 1.5rem;
+}
+
+/* Form Styling */
+.form-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.input-icon {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  color: #888;
 }
 
 .form-control {
-  width: 100%; /* Make input fields full width */
+  width: 100%;
+  padding: 0.75rem 1rem;
+  padding-left: 3rem;  /* Space for icon */
   border-radius: 5px;
   border: 1px solid #cccccc;
-  padding: 0.75rem;
   font-size: 1rem;
-  box-sizing: border-box; /* Include padding in width calculation */
+  box-sizing: border-box;
 }
 
 .form-control:focus {
   border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-  outline: none; /* Remove default focus outline */
+  box-shadow: 0 0 5px rgba(70, 72, 74, 0.5);
+  outline: none;
 }
 
-/* Button styling */
-.btn-primary {
-  width: 100%; /* Make button full width */
-  background-color: #007bff;
+/* Password Toggle Button */
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  background: transparent;
   border: none;
+  cursor: pointer;
+}
+
+/* Error message */
+.error-message {
+  color: #e74c3c;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+/* Forgot password link */
+.forgot-password {
+  text-align: right;
+}
+
+.forgot-password a {
+  font-size: 0.9rem;
+  color: #2e3236;
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+/* Submit Button */
+.submit-btn {
+  width: 100%;
+  background-color: #3d6a41;
+  color: white;
+  padding: 0.75rem;
   border-radius: 5px;
   font-size: 1rem;
-  padding: 0.75rem;
-  transition: background-color 0.3s ease;
-  margin-top: 1rem; /* Added space above the button */
+  cursor: pointer;
+  border: none;
 }
 
-.btn-primary:hover {
-  background-color: #0056b3;
+.submit-btn:hover {
+  background-color: #343b42;
 }
 
-/* Responsive adjustments */
-@media (max-width: 480px) {
-  .card {
-      margin: 0 0.5rem; /* Reduced margin on very small screens */
-      padding: 1rem; /* Slightly reduced padding */
-  }
+/* Register Link */
+.register-link {
+  text-align: center;
+  margin-top: 1.5rem;
 }
 
-/* Text links */
-a {
+.register-link a {
+  color: #427342;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
+
+/* Footer Styling */
+footer {
+  background-color: #f1f1f1;
+  color: #333;
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: auto; /* Push footer to the bottom */
+}
+
+footer a {
   color: #007bff;
   text-decoration: none;
 }
 
-a:hover {
+footer a:hover {
   text-decoration: underline;
 }
 
-/* Subtle fade-in animation */
+/* Fade-in animation */
 @keyframes fadeIn {
   from {
-      opacity: 0;
-      transform: translateY(20px);
+    opacity: 0;
+    transform: translateY(20px);
   }
   to {
-      opacity: 1;
-      transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
   }
-}
-
-/* Text alignment */
-.text-center {
-  text-align: center;
-  margin-top: 1rem;
-  font-size: 0.9rem;
-  color: #666666;
-}
-
-.text-center a {
-  font-weight: bold;
 }

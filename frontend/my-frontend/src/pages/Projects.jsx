@@ -56,52 +56,52 @@ const Projects = () => {
   };
 
   if (isLoading) {
-    return <div>Loading projects...</div>; // Show a loading message while fetching projects
+    return <div className="loading-message">Loading projects...</div>; // Show a loading message while fetching projects
   }
 
   return (
     <div className="container mt-5">
-      <h2 className="text-center mb-4">Projects & Research Collaborations</h2>
-
-      {/* Display existing projects */}
-      {projects.map((project, index) => (
-        <div key={project._id} className="card project-card mb-3 p-4">
-          <div className="form-group mb-3">
-            <label>Project Name</label>
-            <input
-              type="text"
-              className="form-control"
-              value={project.name}
-              readOnly
-            />
+      {/* Display existing projects in a flex container */}
+      <div className="projects-container">
+        {projects.map((project, index) => (
+          <div key={project._id} className="card project-card">
+            <div className="form-group mb-3">
+              <label>Project Name</label>
+              <input
+                type="text"
+                className="form-control"
+                value={project.name}
+                readOnly
+              />
+            </div>
+            <div className="form-group mb-3">
+              <label>Affiliation</label>
+              <input
+                type="text"
+                className="form-control"
+                value={project.affiliation}
+                readOnly
+              />
+            </div>
+            <div className="form-group mb-3">
+              <label>Description</label>
+              <textarea
+                className="form-control"
+                value={project.description}
+                readOnly
+                rows="4"
+              ></textarea>
+            </div>
+            <button
+              type="button"
+              className="btn btn-danger mt-2"
+              onClick={() => handleDeleteProject(project._id, index)}
+            >
+              Delete Project
+            </button>
           </div>
-          <div className="form-group mb-3">
-            <label>Affiliation</label>
-            <input
-              type="text"
-              className="form-control"
-              value={project.affiliation}
-              readOnly
-            />
-          </div>
-          <div className="form-group mb-3">
-            <label>Description</label>
-            <textarea
-              className="form-control"
-              value={project.description}
-              readOnly
-              rows="4"
-            ></textarea>
-          </div>
-          <button
-            type="button"
-            className="btn btn-danger mt-2"
-            onClick={() => handleDeleteProject(project._id, index)}
-          >
-            Delete Project
-          </button>
-        </div>
-      ))}
+        ))}
+      </div>
 
       {/* Form to add a new project */}
       <div className="card project-card mb-3 p-4">

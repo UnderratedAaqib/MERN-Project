@@ -13,6 +13,7 @@ import MediaCoverage from '../pages/MediaCoverage';
 import PhotoGallery from '../pages/PhotoGallery';
 import ContactNetworking from '../pages/ContactNetworking';
 import AnalyticsDashboard from '../pages/AnalyticsDashboard';
+import PDF from"../pages/PDF"
 
 const AppRoutes = () => {
   return (
@@ -30,6 +31,7 @@ const AppRoutes = () => {
           <Route path="/photogallery" element={<PhotoGallery />} />
           <Route path="/contactnetworking" element={<ContactNetworking />} />
           <Route path="/analyticsdashboard" element={<AnalyticsDashboard />} />
+          <Route path="/pdf" element={<PDF />} />
           <Route path="*" element={<h1>404: Page Not Found</h1>} />
         </Routes>
       </div>

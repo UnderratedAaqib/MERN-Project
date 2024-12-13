@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { addPublication, getUserPublications, updatePublication, deletePublication } from '../api/userApi';
+import '../styles/Publications.css';  // Import the Publications CSS
 
 const Publications = () => {
   const [publications, setPublications] = useState([]);
@@ -11,8 +12,7 @@ const Publications = () => {
     const fetchPublications = async () => {
       try {
         const response = await getUserPublications(); // Fetch the publications from the API
-        console.log('Response from server:', response);
-        setPublications(response.publications || []); // Access publications from response.data
+        setPublications(response.publications || []);
       } catch (err) {
         setError('Error fetching publications');
       } finally {
@@ -34,10 +34,10 @@ const Publications = () => {
   // Handle input changes in the publication form
   const handleChange = (index, e) => {
     const updatedPublications = [...publications];
-    const publication = updatedPublications[index]; // Ensure we get the correct publication at this index
+    const publication = updatedPublications[index]; 
 
     if (publication) {
-      publication[e.target.name] = e.target.value; // Update the value safely
+      publication[e.target.name] = e.target.value;
       setPublications(updatedPublications);
     }
   };
@@ -58,41 +58,28 @@ const Publications = () => {
           link: publication.link,
         };
         const response = await updatePublication(updatedPublicationData);
-      
-      // Similar to add publication logic
-      const updatedPublication = response.publication || response;
+        const updatedPublication = response.publication || response;
 
-      setPublications(prevPublications =>
-        prevPublications.map((pub, i) => 
-          i === index 
-            ? { 
-                ...pub, 
-                ...updatedPublication, // Spread the updated publication details
-                _id: publication._id // Ensure _id remains consistent
-              } 
-            : pub
-        )
-      );
-      
-      alert('Publication updated successfully');
-    } catch (err) {
+        setPublications(prevPublications =>
+          prevPublications.map((pub, i) => 
+            i === index ? { ...pub, ...updatedPublication, _id: publication._id } : pub
+          )
+        );
+        alert('Publication updated successfully');
+      } catch (err) {
         setError('Error updating publication');
       }
     } else {
       // Handle adding new publication
       try {
         const response = await addPublication(publication);
-        console.log('Add publication response:', response); // Log the full response
-  
-        // Adjust this line based on your actual response structure
         const newlyAddedPublication = response.publication || response; 
-  
+
         setPublications(prevPublications => 
           prevPublications.map(pub => 
             pub === publication ? newlyAddedPublication : pub
           )
         );
-  
         alert('Publication added successfully');
       } catch (err) {
         setError('Error adding publication');
@@ -116,76 +103,83 @@ const Publications = () => {
   };
 
   if (loading) {
-    return <div>Loading publications...</div>;
+    return <div className="loading">Loading publications...</div>;
   }
 
   return (
-    <div className="container mt-5">
-      <h2 className="text-center">Manage Publications</h2>
-      {error && <div className="alert alert-danger">{error}</div>}
+    <div className="publications-container">
 
-      <form>
-        {publications.map((publication, index) => (
-          <div key={index} className="card mb-3 p-3">
-            <div className="form-group mb-3">
-              <label>Publication Title</label>
-              <input
-                type="text"
-                className="form-control"
-                name="title"
-                value={publication?.title || ''} // Default to empty string if title is undefined
-                onChange={(e) => handleChange(index, e)}
-                required
-              />
+      <div className="publications-main">
+        {error && <div className="error-message">{error}</div>}
+
+        <form className="publications-form">
+          {publications.map((publication, index) => (
+            <div key={index} className="publication-card">
+              <div className="form-group">
+                <label>Publication Title</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="title"
+                  value={publication?.title || ''}
+                  onChange={(e) => handleChange(index, e)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Year</label>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="year"
+                  value={publication?.year || ''}
+                  onChange={(e) => handleChange(index, e)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Link</label>
+                <input
+                  type="url"
+                  className="form-control"
+                  name="link"
+                  value={publication?.link || ''}
+                  onChange={(e) => handleChange(index, e)}
+                  required
+                />
+              </div>
+
+              <div className="buttons">
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={(e) => handleSubmit(e, index)}
+                >
+                  {publication?._id ? 'Update Publication' : 'Add Publication'}
+                </button>
+
+                {publication?._id && (
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={() => handleDelete(index)}
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
             </div>
-            <div className="form-group mb-3">
-              <label>Year</label>
-              <input
-                type="number"
-                className="form-control"
-                name="year"
-                value={publication?.year || ''} // Default to empty string if year is undefined
-                onChange={(e) => handleChange(index, e)}
-                required
-              />
-            </div>
-            <div className="form-group mb-3">
-              <label>Link</label>
-              <input
-                type="url"
-                className="form-control"
-                name="link"
-                value={publication?.link || ''} // Default to empty string if link is undefined
-                onChange={(e) => handleChange(index, e)}
-                required
-              />
-            </div>
+          ))}
+          
+          <button type="button" className="btn btn-secondary" onClick={addPublicationHandler}>
+            Add Publication
+          </button>
+        </form>
+      </div>
 
-            <button
-              type="button"
-              className="btn btn-warning"
-              onClick={(e) => handleSubmit(e, index)}
-            >
-              {publication?._id ? 'Update Publication' : 'Add Publication'}
-            </button>
-
-            {/* Delete Button */}
-            {publication?._id && (
-              <button
-                type="button"
-                className="btn btn-danger ml-2"
-                onClick={() => handleDelete(index)}
-              >
-                Delete
-              </button>
-            )}
-          </div>
-        ))}
-
-        <button type="button" className="btn btn-secondary" onClick={addPublicationHandler}>
-          Add Publication
-        </button>
-      </form>
+      <footer>
+        <p>&copy; 2024 My App. All rights reserved.</p>
+      </footer>
     </div>
   );
 };
