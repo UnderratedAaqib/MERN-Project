@@ -192,6 +192,15 @@ footer a {
 footer a:hover {
   text-decoration: underline;
 }
+.error-message {
+  color: white; /* Ensures text is visible on a red background */
+  background-color: #dc3545; /* Bootstrap's danger color */
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+}
 
 /* Fade-in animation */
 @keyframes fadeIn {

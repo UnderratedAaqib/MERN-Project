@@ -1,7 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';  // Make sure you're using Link from react-router-dom
+import { Link, useNavigate } from 'react-router-dom';  // Import useNavigate for navigation
+import { logout } from '../api/authApi'; // Import the logout function
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  // Handle logout functionality
+  const handleLogout = () => {
+    logout(); // Clear token and session-related data
+    navigate('/'); // Redirect to the login page after logging out
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
       <div className="container">
@@ -19,7 +28,7 @@ const Navbar = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
-          <li className="nav-item">
+            <li className="nav-item">
               <Link className="nav-link" to="/profile">Profile</Link> {/* Add link to Profile */}
             </li>
             <li className="nav-item">
@@ -41,13 +50,17 @@ const Navbar = () => {
               <Link className="nav-link" to="/contactnetworking">Contact</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/analyticsdashboard">Analytics</Link>
-            </li>
-            <li className="nav-item">
               <Link className="nav-link" to="/pdf">Download as PDF</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/logout">Logout</Link>
+              {/* Change Logout from Link to a Button */}
+              <button 
+                className="nav-link btn btn-link" 
+                onClick={handleLogout} 
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                Logout
+              </button>
             </li>
           </ul>
         </div>

@@ -308,3 +308,57 @@ export const deleteMediaArticle = (articleId) => {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
+//for contact details
+// API call to get social details (LinkedIn and GitHub) for the logged-in user
+export const getSocialDetails = () => {
+  const token = getAuthToken();
+  return API.get('/social', {
+    headers: {
+      Authorization: `Bearer ${token}`, // Attach token to the Authorization header
+    },
+  })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Failed to fetch social details:', error);
+      throw error;
+    });
+};
+
+// API call to update social details (LinkedIn and GitHub) for the logged-in user
+export const updateSocialDetails = (socialData) => {
+  const token = getAuthToken();
+  console.log("Sending social data to API:", socialData); // Debugging log
+  return API.put('/social', socialData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Failed to update social details:', error);
+      throw error;
+    });
+};
+
+
+// API call to fetch all user-related data (protected route)
+export const getAllUserData = () => {
+  const token = getAuthToken();
+  if (!token) {
+    throw new Error('No token found in localStorage');
+  }
+
+  return API.get('/all-data', {
+    headers: {
+      Authorization: `Bearer ${token}`, // Attach token to the Authorization header
+    },
+  })
+    .then((response) => {
+      console.log('All user data fetched successfully:', response.data); // Log response
+      return response.data; // Return the fetched data
+    })
+    .catch((error) => {
+      console.error('Error fetching all user data:', error); // Log any error
+      throw error; // Rethrow error for handling in calling code
+    });
+};

@@ -6,10 +6,10 @@ import Course from '../models/CourseModel.js';
 import Project from '../models/ProjectModel.js';
 import Talk from "../models/Talk.js";
 import MediaCoverage from '../models/MediaCoverage.js';
+import Social from '../models/socialSchema.js';
 // Register a new user
 export const registerUser = async (req, res) => {
   const { name, email, password } = req.body;
-
   try {
     // Check if user already exists
     const userExists = await UserData.findOne({ email });
@@ -429,5 +429,105 @@ export const deleteMediaArticle = async (req, res) => {
     res.status(200).json({ message: 'Article deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: 'Failed to delete media article', error: error.message });
+  }
+};
+
+
+//Social media functions
+export const getSocialDetails = async (req, res) => {
+  try {
+    const userId = req.userId; // Get userId from middleware
+    const user = await UserData.findById(userId); // Find user by ID
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const socialDetails = await Social.findOne({ userId });
+
+    // If no social details exist for the user, return an empty response
+    if (!socialDetails) {
+      return res.status(200).json({
+        email: user.email, // Return email from the UserData schema
+        linkedIn: '',
+        github: '',
+      });
+    }
+
+    res.status(200).json({
+      email: user.email,
+      linkedIn: socialDetails.linkedIn,
+      github: socialDetails.github,
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// Update social details (LinkedIn and GitHub) for the logged-in user
+export const updateSocialDetails = async (req, res) => {
+  try {
+    const { linkedIn, github } = req.body;
+    const userId = req.userId; // Ensure this is extracted correctly
+
+    let socialDetails = await Social.findOne({ userId });
+
+    if (!socialDetails) {
+      socialDetails = new Social({
+        userId,
+        linkedIn: linkedIn || '',
+        github: github || '',
+      });
+    } else {
+      socialDetails.linkedIn = linkedIn || socialDetails.linkedIn;
+      socialDetails.github = github || socialDetails.github;
+    }
+
+    const savedDetails = await socialDetails.save();
+    console.log("Social details saved:", savedDetails);
+
+    res.status(200).json({
+      message: 'Social details updated successfully',
+      socialDetails: savedDetails,
+    });
+  } catch (error) {
+    console.error("Error in updateSocialDetails:", error.message);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+
+//Export all data for download
+export const getAllUserData = async (req, res) => {
+  try {
+    const userId = req.userId; // Assuming `userId` is populated from the JWT middleware
+
+    // Fetch user profile
+    const userProfile = await UserData.findById(userId).select('-password'); // Exclude password field
+
+    if (!userProfile) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Fetch related data
+    const publications = await Publication.find({ user: userId });
+    const courses = await Course.find({ userId });
+    const projects = await Project.find({ userId });
+    const talks = await Talk.find({ userId });
+    const mediaArticles = await MediaCoverage.find({ userId });
+    const socialDetails = await Social.findOne({ userId });
+
+    // Return all data in a single response
+    res.status(200).json({
+      userProfile,
+      publications,
+      courses,
+      projects,
+      talks,
+      mediaArticles,
+      socialDetails: socialDetails || {}, // Return empty object if no social details exist
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
