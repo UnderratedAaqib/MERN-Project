@@ -6,14 +6,15 @@ import Projects from '../pages/Projects';
 import Teaching from '../pages/Teaching';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/NavBar';
 import Footer from '../components/Footer';
 import ConferenceTalks from '../pages/ConferenceTalks';
 import MediaCoverage from '../pages/MediaCoverage';
 import PhotoGallery from '../pages/PhotoGallery';
 import ContactNetworking from '../pages/ContactNetworking';
 import AnalyticsDashboard from '../pages/AnalyticsDashboard';
-import PDF from"../pages/PDF"
+import PDF from "../pages/PDF";
+import ProtectedRoute from '../components/ProtectedRoute'; // Import the HOC
 
 const AppRoutes = () => {
   return (
@@ -21,17 +22,83 @@ const AppRoutes = () => {
       <Navbar />
       <div className="content">
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/publications" element={<Publications />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/teaching" element={<Teaching />} />
-          <Route path="/conferencetalks" element={<ConferenceTalks />} />
-          <Route path="/photogallery" element={<PhotoGallery />} />
-          <Route path="/contactnetworking" element={<ContactNetworking />} />
-          <Route path="/analyticsdashboard" element={<AnalyticsDashboard />} />
-          <Route path="/pdf" element={<PDF />} />
+
+          {/* Protected Routes */}
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/publications"
+            element={
+              <ProtectedRoute>
+                <Publications />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/projects"
+            element={
+              <ProtectedRoute>
+                <Projects />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/teaching"
+            element={
+              <ProtectedRoute>
+                <Teaching />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/conferencetalks"
+            element={
+              <ProtectedRoute>
+                <ConferenceTalks />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/photogallery"
+            element={
+              <ProtectedRoute>
+                <PhotoGallery />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/contactnetworking"
+            element={
+              <ProtectedRoute>
+                <ContactNetworking />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/analyticsdashboard"
+            element={
+              <ProtectedRoute>
+                <AnalyticsDashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pdf"
+            element={
+              <ProtectedRoute>
+                <PDF />
+              </ProtectedRoute>
+            }
+          />
           <Route path="*" element={<h1>404: Page Not Found</h1>} />
         </Routes>
       </div>

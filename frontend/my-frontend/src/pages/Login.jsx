@@ -79,11 +79,7 @@ const Login = () => {
               <div className="error-message">{errorMessage}</div>
             )}
 
-            {/* Forgot Password Link */}
-            <div className="forgot-password">
-              <a href="/forgot-password">Forgot password?</a>
-            </div>
-
+            
             {/* Submit Button */}
             <button type="submit" className="submit-btn">
               <span>Sign In</span>
@@ -98,9 +94,7 @@ const Login = () => {
         </div>
       </div>
 
-      <footer>
-        <p>&copy; 2024 My App. All rights reserved.</p>
-      </footer>
+      
     </div>
   );
 };

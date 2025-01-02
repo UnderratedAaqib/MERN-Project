@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerUser, loginUser, updateProfile,getUserProfile,addPublication,getUserPublications,updatePublication,deletePublication,addCourse,deleteCourse,getCourses,getProjects,addProject,deleteProject,addTalk,getTalks,deleteTalk,getMediaArticles,addMediaArticle,deleteMediaArticle} from '../controllers/userDataController.js';
+import { registerUser, loginUser, updateProfile,getUserProfile,addPublication,getUserPublications,updatePublication,deletePublication,addCourse,deleteCourse,getCourses,getProjects,addProject,deleteProject,addTalk,getTalks,deleteTalk,getMediaArticles,addMediaArticle,deleteMediaArticle,getSocialDetails,updateSocialDetails, getAllUserData} from '../controllers/userDataController.js';
 
 import { protect } from '../middlewares/authMiddleware.js';
 
@@ -63,5 +63,16 @@ router.post('/media', protect, addMediaArticle);
 
 // Delete a media article by ID
 router.delete('/media/:articleId', protect, deleteMediaArticle);
+
+//social details
+router.get('/social', protect, getSocialDetails); // Fetch social details (LinkedIn, GitHub, email)
+router.put('/social', protect, (req, res, next) => {
+    console.log("PUT /social route hit");
+    next();
+  }, updateSocialDetails);
+  
+
+// Fetch all user data
+router.get('/all-data', protect, getAllUserData); // New route
 
 export default router;
